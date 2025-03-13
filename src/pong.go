@@ -3,18 +3,18 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 func main() {
 	height := 25
 	width := 80
-
 	ballX, ballY := width/2, height/2
 	leftPaddleY := height/2 - 1
 	rightPaddleY := height/2 - 1
 	paddleHeight := 3
-
-	game(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight)
+	SballX, SballY := 1, 1
+	game(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight, SballX, SballY)
 }
 
 func field(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight int) {
@@ -44,9 +44,18 @@ func field(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight 
 	fmt.Println(strings.Repeat(borderChar, width))
 }
 
-func game(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight int) {
+func game(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight, SballX, SballY int) {
 	for {
 		fmt.Print("\033[H\033[2J")
 		field(height, width, ballX, ballY, leftPaddleY, rightPaddleY, paddleHeight)
+		ballX += SballX
+		ballY += SballY
+		if ballY <= 1 || ballY >= height-2 {
+			SballY *= -1
+		}
+		if ballX <= 2 || ballX >= width-3 {
+			SballX *= -1
+		}
+		time.Sleep(50 * time.Millisecond)
 	}
 }
